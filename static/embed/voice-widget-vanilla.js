@@ -121,7 +121,10 @@
 
       room.on(LivekitClient.RoomEvent.TrackSubscribed, function(track) {
         if (track.kind === LivekitClient.Track.Kind.Audio) {
-          track.attach();
+          var audioEl = track.attach();
+          audioEl.setAttribute('data-livekit', 'true');
+          audioEl.autoplay = true;
+          document.body.appendChild(audioEl);
         }
       });
 
@@ -139,6 +142,7 @@
       await currentRoom.disconnect();
       currentRoom = null;
     }
+    document.querySelectorAll('audio[data-livekit]').forEach(function(el) { el.remove(); });
     renderAll('ended');
   }
 
