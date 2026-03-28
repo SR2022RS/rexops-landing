@@ -56,7 +56,7 @@
       var btn = document.createElement('button');
       btn.className = 'crewiq-voice-btn crewiq-voice-btn--idle';
       btn.innerHTML = '<span style="font-size:20px">🎙</span> Speak with an agent';
-      btn.onclick = function() { render(container, 'idle'); };
+      btn.onclick = function() { startCall(container); };
       wrap.appendChild(p);
       wrap.appendChild(btn);
       ctrl.appendChild(wrap);
