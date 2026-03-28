@@ -41,11 +41,30 @@
       var status = document.createElement('div');
       status.className = 'crewiq-voice-active__status';
       status.innerHTML = '<span class="crewiq-voice-active__dot"></span>Live with Alex';
+      var muteBtn = document.createElement('button');
+      muteBtn.className = 'crewiq-voice-btn crewiq-voice-btn--idle';
+      muteBtn.innerHTML = '<span style="font-size:16px">🎙</span> Mute';
+      muteBtn.dataset.muted = 'false';
+      muteBtn.onclick = function() {
+        var isMuted = muteBtn.dataset.muted === 'true';
+        if (window.__livekitRoom) {
+          var pubs = window.__livekitRoom.localParticipant ? window.__livekitRoom.localParticipant.audioTrackPublications : null;
+          if (pubs) {
+            pubs.forEach(function(pub) {
+              if (pub.track) { isMuted ? pub.track.unmute() : pub.track.mute(); }
+            });
+          }
+        }
+        muteBtn.dataset.muted = isMuted ? 'false' : 'true';
+        muteBtn.innerHTML = isMuted ? '<span style="font-size:16px">🎙</span> Mute' : '<span style="font-size:16px">🔇</span> Unmute';
+        muteBtn.style.opacity = isMuted ? '1' : '0.6';
+      };
       var endBtn = document.createElement('button');
       endBtn.className = 'crewiq-voice-btn crewiq-voice-btn--end';
       endBtn.textContent = 'End call';
       endBtn.onclick = function() { endCall(container); };
       wrap.appendChild(status);
+      wrap.appendChild(muteBtn);
       wrap.appendChild(endBtn);
       ctrl.appendChild(wrap);
     } else if (state === 'ended') {
@@ -93,6 +112,7 @@
       });
 
       await room.connect(data.url || LIVEKIT_URL, data.token);
+      window.__livekitRoom = room;
       await room.localParticipant.setMicrophoneEnabled(true);
       renderAll('connected');
 
