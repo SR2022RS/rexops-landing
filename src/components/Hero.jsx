@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { agents } from '../data/agents'
+import VoiceWidget from './VoiceWidget'
 
 function FloatingCard({ agent, delay, x }) {
   return (
@@ -77,6 +78,10 @@ export default function Hero() {
             >
               See How It Works
             </a>
+          </div>
+
+          <div className="mt-8">
+            <VoiceWidget />
           </div>
         </motion.div>
       </div>

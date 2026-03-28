@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { agents, bundles } from '../data/agents'
 import { ArrowRight, Check } from 'lucide-react'
+import VoiceWidget from './VoiceWidget'
 
 export default function Pricing({ setSelectedAgents }) {
   const [annual, setAnnual] = useState(false)
@@ -129,6 +130,10 @@ export default function Pricing({ setSelectedAgents }) {
           <p className="text-sm text-gray-500 font-body">
             Annual plans: <strong>2 months free</strong> — pay for 10, get 12.
           </p>
+
+          <div className="mt-8 flex justify-center">
+            <VoiceWidget />
+          </div>
         </motion.div>
       </div>
     </section>
