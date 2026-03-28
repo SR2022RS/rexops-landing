@@ -56,6 +56,10 @@
       0%, 100% { opacity: 1; transform: scale(1); }\
       50% { opacity: 0.4; transform: scale(1.3); }\
     }\
+    @keyframes crewiq-antenna-pulse {\
+      0%, 100% { opacity: 1; r: 3; }\
+      50% { opacity: 0.4; r: 5; }\
+    }\
   ';
   document.head.appendChild(css);
 
@@ -67,7 +71,7 @@
     if (state === 'idle') {
       var btn = document.createElement('button');
       btn.className = 'crewiq-voice-btn crewiq-voice-btn--idle';
-      btn.innerHTML = '<span style="font-size:20px">🎙</span> Talk to an agent';
+      btn.innerHTML = '<span style="font-size:20px">🎙</span> Speak with an agent';
       btn.onclick = function() { startCall(container); };
       container.appendChild(btn);
     }
@@ -131,6 +135,10 @@
       await room.connect(data.url || LIVEKIT_URL, data.token);
       await room.localParticipant.setMicrophoneEnabled(true);
       renderAll('connected');
+      var robotContainer = document.getElementById('voice-widget-hero');
+      if (robotContainer) {
+        robotContainer.style.filter = 'drop-shadow(0 0 16px rgba(0,229,255,0.4))';
+      }
     } catch (err) {
       console.error('Voice connection failed:', err);
       renderAll('idle');
@@ -143,6 +151,10 @@
       currentRoom = null;
     }
     document.querySelectorAll('audio[data-livekit]').forEach(function(el) { el.remove(); });
+    var robotContainer = document.getElementById('voice-widget-hero');
+    if (robotContainer) {
+      robotContainer.style.filter = 'none';
+    }
     renderAll('ended');
   }
 
