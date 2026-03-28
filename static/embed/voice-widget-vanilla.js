@@ -119,4 +119,9 @@
   document.addEventListener('DOMContentLoaded', function() {
     renderAll('idle');
   });
+
+  // Also reset immediately in case DOM already loaded
+  if (document.readyState !== 'loading') {
+    renderAll('idle');
+  }
 })();
