@@ -65,25 +65,34 @@
 
   var currentRoom = null;
 
+  function getControlDiv(container) {
+    var ctrl = container.querySelector('.crewiq-voice-controls');
+    if (!ctrl) {
+      ctrl = document.createElement('div');
+      ctrl.className = 'crewiq-voice-controls';
+      container.appendChild(ctrl);
+    }
+    return ctrl;
+  }
+
   function render(container, state) {
-    container.innerHTML = '';
+    var ctrl = getControlDiv(container);
+    ctrl.innerHTML = '';
 
     if (state === 'idle') {
       var btn = document.createElement('button');
       btn.className = 'crewiq-voice-btn crewiq-voice-btn--idle';
       btn.innerHTML = '<span style="font-size:20px">🎙</span> Speak with an agent';
       btn.onclick = function() { startCall(container); };
-      container.appendChild(btn);
+      ctrl.appendChild(btn);
     }
-
     else if (state === 'connecting') {
       var btn = document.createElement('button');
       btn.className = 'crewiq-voice-btn crewiq-voice-btn--connecting';
       btn.disabled = true;
       btn.innerHTML = '<span class="crewiq-voice-pulse"></span> Connecting...';
-      container.appendChild(btn);
+      ctrl.appendChild(btn);
     }
-
     else if (state === 'connected') {
       var wrap = document.createElement('div');
       wrap.className = 'crewiq-voice-active';
@@ -93,19 +102,18 @@
       endBtn.textContent = 'End call';
       endBtn.onclick = function() { endCall(container); };
       wrap.appendChild(endBtn);
-      container.appendChild(wrap);
+      ctrl.appendChild(wrap);
     }
-
     else if (state === 'ended') {
       var wrap = document.createElement('div');
       wrap.className = 'crewiq-voice-ended';
       wrap.innerHTML = '<p>Thanks for chatting — we\'ll be in touch within 48 hours.</p>';
       var btn = document.createElement('button');
       btn.className = 'crewiq-voice-btn crewiq-voice-btn--idle';
-      btn.innerHTML = '<span style="font-size:20px">🎙</span> Talk again';
+      btn.innerHTML = '<span style="font-size:20px">🎙</span> Speak with an agent';
       btn.onclick = function() { render(container, 'idle'); };
       wrap.appendChild(btn);
-      container.appendChild(wrap);
+      ctrl.appendChild(wrap);
     }
   }
 
